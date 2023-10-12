@@ -8,6 +8,7 @@ module.exports = {
     './src/**/*.{js,jsx}',
 	],
   theme: {
+    
     container: {
       center: true,
       padding: "2rem",
@@ -16,6 +17,16 @@ module.exports = {
       },
     },
     extend: {
+      colors: {
+        transparent: 'transparent',
+        current: 'currentColor',
+        'white': '#ffffff',
+        'black': '#000000',
+        'primary': '#D8652D',
+        'secondary': '#E1946F',
+        'primary-light': '#EAC3B1',
+        'light': '#F3F3F3',
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },

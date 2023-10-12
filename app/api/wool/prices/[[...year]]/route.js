@@ -1,25 +1,22 @@
-// import { NextResponse } from "next/server";
-// import { data } from "./data";
+
 import { MongoClient,ObjectId } from "mongodb";
 import { connectToDB ,database } from "@/utils/database";
 
 var id = new ObjectId("65137dea4ff974eb2dd95065");
 
 export async function GET(req,{ params }) {
-
+    let body = params.year;
     await connectToDB();
 
     const Prices = database.collection("prices");
 
     const query = { _id: id };
     const doc = await Prices.findOne(query);
-    console.log("query completed")
-    console.log(doc.year['2022']);
 
-    let body = params.year;
     var year = new Date().getFullYear();
-    if(!body){
-        
+    var consolelog = !body ? year : (body.length == 1 ? body[0] : `${body[0]} - ${body[1]}`) 
+    console.log("searching prices for year: ",consolelog)
+    if(!body){        
         return new Response(JSON.stringify({"2023":doc.year[year]}),{status: 200});
     }
     if(body.length == 1){

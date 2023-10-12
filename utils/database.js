@@ -2,16 +2,27 @@ import { MongoClient,ObjectId } from "mongodb";
 const uri = process.env.MONGODB_URI;
 
 const client = new MongoClient(uri);
-client.connect();
+let isConnected = false;
+
 export var database;
 
 export async function connectToDB() {
     try {
-      var id = new ObjectId("65137dea4ff974eb2dd95065");
-      database = client.db("fiberguard1");
+
+      if (!isConnected) {
+        console.log("connecting to databse...");
+        client.connect();
+        isConnected = true;
+        database = client.db("fiberguard1");
+        console.log("connection successfull !");
+      }
+      else{
+        database = client.db("fiberguard1");
+        console.log("using previous connection");
+      }
 
     }
     catch (err) {
-      console.log(err);
+      console.log("error connecting to database: ", err);
   }
 }

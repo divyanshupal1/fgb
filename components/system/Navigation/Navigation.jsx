@@ -10,8 +10,11 @@ export const Navigation = () => {
     const toggle = () => setOpen(!open);
     return (
      <>
-        <TopNavigation toggle={toggle} />
-        <LeftNavigation open={open} toggle={toggle}/>
+        <nav>
+            <TopNavigation toggle={toggle} />
+            <LeftNavigation open={open} toggle={toggle}/>
+        </nav>
+
      </>
 
     )
