@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Logo } from '../Icons/Logo'
+import { Logo } from '../icons/Logo'
 // import { Button } from '../button/button'
 // import { Menu ,Close} from '../Icons/system'
 import { usePathname } from 'next/navigation'
