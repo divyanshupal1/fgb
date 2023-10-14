@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      zIndex: {
+        '100': '100',
+      },
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
@@ -43,5 +46,11 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function ({ addVariant }) {
+      addVariant('child', '& > *');
+      addVariant('child-hover', '& > *:hover');
+    },
+  ],
 }

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Logo } from '../Icons/Logo'
 // import { Button } from '../button/button'
-import { Menu ,Close} from '../Icons/system'
+// import { Menu ,Close} from '../Icons/system'
 import { usePathname } from 'next/navigation'
 // import { UserContext } from '../firebase/userProvider'
 
@@ -14,7 +14,9 @@ export const LeftNavigation = ({open,toggle}) => {
   return (
     <div className={classes}>
         <div className='flex items-center justify-start gap-3 px-4 py-4 w-full'>
-            <div onClick={toggle}  className='flex items-center justify-start sm:hidden '><Menu/></div>
+            <div onClick={toggle}  className='flex items-center justify-start sm:hidden '>
+                {/* <Menu /> */}
+            </div>
             <Logo />
         </div>
         <div className="options">

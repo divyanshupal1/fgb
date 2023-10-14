@@ -51,4 +51,21 @@
     }
   }
 
- 
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollbar-track-hidden::-webkit-scrollbar {
+  display: none;
+ }
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #00000000; 
+}
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: #D8652D; 
+  border-radius: 12px;
+}
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: #fd8244; 
+  width: 10px;
+}
