@@ -3,22 +3,64 @@
 import { LoadingScreen } from "@/components/system/Loading/LoadingScreen";
 import { useEffect, useState, useRef ,useReducer } from "react";
 import {chartReducer} from "@/reducers/chartDataReducer";
-import { prices } from '@/sampledata/prices/data';
+// import { prices } from '@/sampledata/prices/data';
 import { newsData } from "@/sampledata/news/data";
 
 export default function Home() {
 
-  const [statsData,setStatsData] = useState({"yearhigh":0,"yearlow":0,"5yearhigh":0,"5yearlow":0,"maxhigh":0,"maxlow":0});
+
+  // console.log(abc);
+  const [prices,setPrices] = useState([]);
+
+  const [statsData,setStatsData] = useState({"yearhigh":0,"yearlow":1000000,"fyearhigh":0,"fyearlow":1000000,"maxhigh":0,"maxlow":1000000});
 
   const [rangeState,setRangeState] = useState("YEAR");
   function updateRangeState(value){
     setRangeState(value);
   }
 
-  const [chartState,chartDispatch] = useReducer(chartReducer,{data:[],type:""});
+  const [chartState,chartDispatch] = useReducer(chartReducer,{data:[],type:""});  
+  var statsLocal = {"yearhigh":0,"yearlow":1000000,"fyearhigh":0,"fyearlow":1000000,"maxhigh":0,"maxlow":1000000}
 
   useEffect(() => {
-    chartDispatch({type:"YEAR",payload:prices});
+    var year = new Date().getFullYear();
+    var prices;
+    console.log("fetching prices.....");
+    axios.get("/api/wool/prices").then((res)=>{
+      console.log("fetced prices successfully.....");
+      prices=res.data;
+      setPrices(res.data);
+      chartDispatch({type:"YEAR",payload:res.data});
+      prices.forEach((item)=>{
+        item.data.map((data)=>{
+          if(data.month.split(" ")[1]==year){
+            if(data.price>statsLocal.yearhigh){
+              statsLocal.yearhigh = data.price;
+            }
+            if(data.price<statsLocal.yearlow){
+              statsLocal.yearlow = data.price;
+            }
+          }
+          if(data.month.split(" ")[1]<=year && data.month.split(" ")[1]>=year-5 ){
+            if(data.price>statsLocal.fyearhigh){
+              statsLocal.fyearhigh = data.price;
+            }
+            if(data.price<statsLocal.fyearlow){
+              statsLocal.fyearlow = data.price;
+            }
+          }
+          if(data.price>statsLocal.maxhigh){
+            statsLocal.maxhigh = data.price;
+          }
+          if(data.price<statsLocal.maxlow){ 
+            statsLocal.maxlow = data.price;
+          }
+        })
+      })
+      
+      setStatsData(statsLocal);
+    })
+   
   }, []);
 
   useEffect(() => {
@@ -99,27 +141,27 @@ export default function Home() {
               <div className="w-full flex flex-col gap-y-2">
                 <div className="w-full flex justify-between rounded-md bg-primary-light p-2 px-4">
                   <span className="">Highest this year</span>
-                  <span className="font-bold">Rs. {price}</span>
+                  <span className="font-bold">Rs. {statsData.yearhigh}</span>
                 </div>
                 <div className="w-full flex justify-between rounded-md bg-primary-light p-2 px-4">
                   <span className="">Lowest this year</span>
-                  <span className="font-bold">Rs. {price}</span>
+                  <span className="font-bold">Rs. {statsData.yearlow}</span>
                 </div>
                 <div className="w-full flex justify-between rounded-md bg-primary-light p-2 px-4">
                   <span className="">5 year high</span>
-                  <span className="font-bold">Rs. {price}</span>
+                  <span className="font-bold">Rs. {statsData.fyearhigh}</span>
                 </div>
                 <div className="w-full flex justify-between rounded-md bg-primary-light p-2 px-4">
                   <span className="">5 year low</span>
-                  <span className="font-bold">Rs. {price}</span>
+                  <span className="font-bold">Rs. {statsData.fyearlow}</span>
                 </div>
                 <div className="w-full flex justify-between rounded-md bg-primary-light p-2 px-4">
                   <span className="">Max High</span>
-                  <span className="font-bold">Rs. {price}</span>
+                  <span className="font-bold">Rs. {statsData.maxhigh}</span>
                 </div>
                 <div className="w-full flex justify-between rounded-md bg-primary-light p-2 px-4">
                   <span className="">Max Low</span>
-                  <span className="font-bold">Rs. {price}</span>
+                  <span className="font-bold">Rs. {statsData.maxlow}</span>
                 </div>
               </div>
             </div>
@@ -206,6 +248,7 @@ import {
 
 // import Example from "@/components/charts/Line";
 import Chart from "@/components/charts/Line";
+import axios from "axios";
 export function PriceRange({updater}) {
   return (
     <Select onValueChange={(value)=>updater(value)}>

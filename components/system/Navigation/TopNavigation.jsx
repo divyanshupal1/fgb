@@ -27,7 +27,7 @@ export const TopNavigation = ({ toggle }) => {
             title="Market & News"
           />
           <NavLink
-            url="/"
+            url="/learn"
             active={pathname == "/education " ? true : false}
             title="Education"
           />

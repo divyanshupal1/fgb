@@ -46,7 +46,7 @@ export default function Chart({size,chartData}) {
     return null;
   }
 
-  console.log(chartData)
+  // console.log(chartData)
 
     return (
         <LineChart
